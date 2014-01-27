@@ -14,6 +14,9 @@ local menubar = require("menubar")
 vicious = require("vicious")
 local wi = require("wi")
 
+--Configure home path so you dont have too
+home_path  = os.getenv('HOME') .. '/'
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -76,7 +79,8 @@ local layouts =
 -- {{{ Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
-        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+        --gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+        gears.wallpaper.maximized(home_path .. "Documents/autre/arch-blueprint_1920x1080.png", s, true)
     end
 end
 -- }}}
@@ -96,7 +100,7 @@ tags = {
          '9',
            },
  layout = {
-      layouts[3],   -- 1
+      layouts[2],   -- 1
       layouts[10],  -- 2
       layouts[10],  -- 3
       layouts[10],  -- 4
