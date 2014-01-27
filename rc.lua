@@ -12,6 +12,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 
 vicious = require("vicious")
+local wi = require("wi")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -84,18 +85,18 @@ end
 -- Define a tag table which hold all screen tags.
 tags = {
  names  = { 
-         '☭:Xterm',
-         '⚡:Chrome', 
-         '♨:Firefox', 
-         '☠:Sublime Text',  
-         '☃:5', 
-         '⌥:6', 
-         '⌘:7',
-         '✇:8',
-         '✣:9',
+         '1:Xterm',
+         '2:Chrome', 
+         '3:Firefox', 
+         '4:Sublime Text',  
+         '5', 
+         '6', 
+         '7',
+         '8',
+         '9',
            },
  layout = {
-      layouts[10],  -- 1
+      layouts[3],   -- 1
       layouts[10],  -- 2
       layouts[10],  -- 3
       layouts[10],  -- 4
@@ -110,31 +111,6 @@ tags = {
  -- Each screen has its own tag table.
  tags[s] = awful.tag(tags.names, s, tags.layout)
  end
--- }}}
-
--- {{{ Widgets
-
---memory usage (progressbar)
-memwidget = awful.widget.progressbar()
-memwidget:set_width(8)
-memwidget:set_height(10)
-memwidget:set_vertical(true)
-memwidget:set_background_color("#494B4F")
-memwidget:set_border_color(nil)
-memwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#AECF96"}, {0.5, "#88A175"},  {1, "#FF5656"}}})
-vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
-
--- CPU usage graph
-cpuwidget = awful.widget.graph()
-cpuwidget:set_width(50)
-cpuwidget:set_background_color("#494B4F")
-cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#FF5656"}, {0.5, "#88A175"}, {1, "#AECF96" }}})
-vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
-
---Battery Widget
-batt = wibox.widget.textbox()
-vicious.register(batt, vicious.widgets.bat, "Batt: $2% Rem: $3", 10, "BAT0")
-
 -- }}}
 
 -- {{{ Menu
@@ -242,9 +218,17 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
    
+    right_layout:add(spacer)
     right_layout:add(memwidget)
+    right_layout:add(spacer)
 	  right_layout:add(cpuwidget)
-    right_layout:add(batt)
+    right_layout:add(spacer)
+    right_layout:add(baticon)
+    right_layout:add(batpct)
+    right_layout:add(spacer)
+    right_layout:add(volicon)
+    right_layout:add(volpct)
+    right_layout:add(spacer)
     right_layout:add(mytextclock)
 
     right_layout:add(mylayoutbox[s])
@@ -326,7 +310,16 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end)
+    awful.key({ modkey }, "p", function() menubar.show() end),
+
+    --lock screen
+    awful.key({ modkey,           }, "Delete", function () awful.util.spawn("xflock4") end),
+
+    --sound
+    -- 121 122 123 mute down up
+    awful.key({}, "#121", function () awful.util.spawn_with_shell("amixer -q set Master toggle") end),
+    awful.key({}, "#122", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%-") end),
+    awful.key({}, "#123", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%+") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -513,7 +506,6 @@ end
 
 run_once("terminal",nil,nil,1)
 run_once("pidgin",nil,nil,9)
-run_once("volumeicon")
 run_once("redshiftgui")
 --run_once("google-chrome-unstable",nil,nil,2)
 --run_once("firefox-nightly",nil,nil,3)
