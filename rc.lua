@@ -93,7 +93,7 @@ tags = {
          '2:Chrome', 
          '3:Firefox', 
          '4:Sublime Text',  
-         '5', 
+         '5:IDE', 
          '6', 
          '7',
          '8',
@@ -414,6 +414,9 @@ awful.rules.rules = {
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },
+    { rule = { class = "XTerm", instance = "startup" }, properties = { tag = tags[1][1] } },
+    { rule = { class = "pidgin"}, properties = { tag = tags[1][9] } },
+    { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
 }
 -- }}}
 
@@ -502,16 +505,18 @@ function run_once(prg,arg_string,pname,screen)
     end
 
     if not arg_string then 
-        awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "' || (" .. prg .. ")",screen)
+        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "' || (" .. prg .. ")",screen)
     else
-        awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. " ".. arg_string .."' || (" .. prg .. " " .. arg_string .. ")",screen)
+        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. " ".. arg_string .."' || (" .. prg .. " " .. arg_string .. ")",screen)
     end
 end
 
-run_once("terminal",nil,nil,1)
-run_once("pidgin",nil,nil,9)
+
+run_once("xterm", "-r -name startup")
+run_once("pidgin")
 run_once("redshiftgui")
 --run_once("google-chrome-unstable",nil,nil,2)
 --run_once("firefox-nightly",nil,nil,3)
-run_once("subl3",nil,nil,4)
+run_once("subl3", nil, nil, 1)
+    
 -- }}}
