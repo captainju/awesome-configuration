@@ -101,14 +101,14 @@ tags = {
            },
  layout = {
       layouts[2],   -- 1
-      layouts[10],  -- 2
-      layouts[10],  -- 3
+      layouts[1],   -- 2
+      layouts[1],   -- 3
       layouts[10],  -- 4
-      layouts[10],  -- 5
+      layouts[1],  -- 5
       layouts[10],  -- 6
       layouts[10],  -- 7
       layouts[10],  -- 8
-      layouts[10],  -- 9
+      layouts[1],  -- 9
           }
        }
   for s = 1, screen.count() do
