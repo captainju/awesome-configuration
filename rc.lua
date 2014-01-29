@@ -417,6 +417,7 @@ awful.rules.rules = {
     { rule = { class = "XTerm", instance = "startup" }, properties = { tag = tags[1][1] } },
     { rule = { class = "pidgin"}, properties = { tag = tags[1][9] } },
     { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
+    { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][5] } },
 }
 -- }}}
 
