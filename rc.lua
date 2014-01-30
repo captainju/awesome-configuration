@@ -48,7 +48,7 @@ beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm -r"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -89,32 +89,32 @@ end
 -- Define a tag table which hold all screen tags.
 tags = {
  names  = { 
-         '1:Xterm',
-         '2:Chrome', 
-         '3:Firefox', 
-         '4:Sublime Text',  
-         '5:IDE', 
-         '6', 
-         '7',
-         '8',
-         '9',
+           '1:Xterm',
+           '2:Chrome', 
+           '3:Firefox', 
+           '4:Sublime Text',  
+           '5:IDE', 
+           '6', 
+           '7',
+           '8',
+           '9',
            },
  layout = {
-      layouts[2],   -- 1
-      layouts[1],   -- 2
-      layouts[1],   -- 3
-      layouts[10],  -- 4
-      layouts[1],  -- 5
-      layouts[10],  -- 6
-      layouts[10],  -- 7
-      layouts[10],  -- 8
-      layouts[1],  -- 9
+            layouts[2],   -- 1
+            layouts[1],   -- 2
+            layouts[1],   -- 3
+            layouts[10],  -- 4
+            layouts[1],  -- 5
+            layouts[10],  -- 6
+            layouts[10],  -- 7
+            layouts[10],  -- 8
+            layouts[1],  -- 9
           }
        }
-  for s = 1, screen.count() do
+for s = 1, screen.count() do
  -- Each screen has its own tag table.
  tags[s] = awful.tag(tags.names, s, tags.layout)
- end
+end
 -- }}}
 
 -- {{{ Menu
@@ -415,9 +415,12 @@ awful.rules.rules = {
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },
     { rule = { class = "XTerm", instance = "startup" }, properties = { tag = tags[1][1] } },
-    { rule = { class = "pidgin"}, properties = { tag = tags[1][9] } },
+    { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
     { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
     { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][5] } },
+    { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
+    { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
+    { rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
 }
 -- }}}
 
