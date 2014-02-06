@@ -50,6 +50,7 @@ beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 terminal = "xterm -r"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
+lockscreen_cmd = "xflock4"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -126,7 +127,7 @@ myawesomemenu = {
    { "quit", awesome.quit },
    { "poweroff", "systemctl poweroff" },
    { "reboot", "systemctl reboot" },
-   { "lockscreen", "xflock4" }
+   { "lockscreen", lockscreen_cmd }
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
@@ -320,7 +321,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end),
 
     --lock screen
-    awful.key({ modkey,           }, "Delete", function () awful.util.spawn("xflock4") end),
+    awful.key({ modkey,           }, "Delete", function () awful.util.spawn(lockscreen_cmd) end),
 
     --sound
     -- 121 122 123 mute down up
