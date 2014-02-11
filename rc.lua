@@ -95,7 +95,7 @@ tags = {
            '3:Firefox', 
            '4:Sublime Text',  
            '5:IDE', 
-           '6', 
+           '6:DB', 
            '7',
            '8',
            '9',
@@ -106,7 +106,7 @@ tags = {
             layouts[1],   -- 3
             layouts[10],  -- 4
             layouts[1],  -- 5
-            layouts[10],  -- 6
+            layouts[1],  -- 6
             layouts[10],  -- 7
             layouts[10],  -- 8
             layouts[1],  -- 9
@@ -253,9 +253,7 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    awful.button({ }, 3, function () mymainmenu:toggle() end)
 ))
 -- }}}
 
@@ -327,7 +325,10 @@ globalkeys = awful.util.table.join(
     -- 121 122 123 mute down up
     awful.key({}, "#121", function () awful.util.spawn_with_shell("amixer -q set Master toggle") end),
     awful.key({}, "#122", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%-") end),
-    awful.key({}, "#123", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%+") end)
+    awful.key({}, "#123", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%+") end),
+
+    --screen capture
+    awful.key({}, "Print", function () awful.util.spawn_with_shell("xfce4-screenshooter") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -426,6 +427,7 @@ awful.rules.rules = {
     { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
     { rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
+    { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
 }
 -- }}}
 
