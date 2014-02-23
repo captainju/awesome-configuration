@@ -101,7 +101,7 @@ tags = {
            '9',
            },
  layout = {
-            layouts[2],   -- 1
+            layouts[3],   -- 1
             layouts[1],   -- 2
             layouts[1],   -- 3
             layouts[10],  -- 4
@@ -425,6 +425,7 @@ awful.rules.rules = {
     { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
     { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][5] } },
     { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
+    { rule = { class = "Chromium"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
     { rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
     { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
@@ -526,8 +527,6 @@ end
 run_once("xterm", "-r -name startup")
 run_once("pidgin")
 run_once("redshiftgui")
---run_once("google-chrome-unstable",nil,nil,2)
---run_once("firefox-nightly",nil,nil,3)
 run_once("subl3", nil, nil, 1)
     
 -- }}}
