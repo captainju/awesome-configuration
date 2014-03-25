@@ -81,7 +81,8 @@ local layouts =
 if beautiful.wallpaper then
     for s = 1, screen.count() do
         --gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-        gears.wallpaper.maximized(home_path .. "Documents/autre/arch-blueprint_1920x1080.png", s, true)
+        --gears.wallpaper.maximized(home_path .. "Documents/autre/arch-blueprint_1920x1080.png", s, true)
+        gears.wallpaper.maximized(home_path .. "Documents/autre/arch_grad2-whiteblueongrey_1600x900.png", s, true)
     end
 end
 -- }}}
@@ -410,15 +411,10 @@ awful.rules.rules = {
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
                      buttons = clientbuttons } },
-    { rule = { class = "MPlayer" },
-      properties = { floating = true } },
-    { rule = { class = "pinentry" },
-      properties = { floating = true } },
-    { rule = { class = "gimp" },
-      properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+    { rule = { class = "MPlayer" }, properties = { floating = true } },
+    { rule = { class = "pinentry" }, properties = { floating = true } },
+    { rule = { class = "gimp" }, properties = { floating = true } },
+    { rule = { class = "Thunar" }, properties = { floating = true } },
     { rule = { class = "XTerm", instance = "startup" }, properties = { tag = tags[1][1] } },
     { rule = { class = "XTerm" }, properties = { size_hints_honor = false } },
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
@@ -527,6 +523,6 @@ end
 run_once("xterm", "-r -name startup")
 run_once("pidgin")
 run_once("redshiftgui")
-run_once("subl3", nil, nil, 1)
+run_once("subl3")
     
 -- }}}
