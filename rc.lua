@@ -90,13 +90,13 @@ end
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {
- names  = { 
+ names  = {
            '1:Xterm',
-           '2:Chrome', 
-           '3:Firefox', 
-           '4:Sublime Text',  
-           '5:IDE', 
-           '6:DB', 
+           '2:Chrome',
+           '3:Firefox',
+           '4',
+           '5:IDE',
+           '6:DB',
            '7',
            '8',
            '9',
@@ -105,11 +105,11 @@ tags = {
             layouts[3],   -- 1
             layouts[1],   -- 2
             layouts[1],   -- 3
-            layouts[10],  -- 4
+            layouts[1],  -- 4
             layouts[1],  -- 5
             layouts[1],  -- 6
-            layouts[10],  -- 7
-            layouts[10],  -- 8
+            layouts[1],  -- 7
+            layouts[1],  -- 8
             layouts[1],  -- 9
           }
        }
@@ -122,9 +122,9 @@ end
 -- {{{ Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
+   -- { "manual", terminal .. " -e man awesome" },
+   -- { "edit config", editor_cmd .. " " .. awesome.conffile },
+   -- { "restart", awesome.restart },
    { "quit", awesome.quit },
    { "poweroff", "systemctl poweroff" },
    { "reboot", "systemctl reboot" },
@@ -226,7 +226,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-   
+
     right_layout:add(spacer)
     right_layout:add(memwidget)
     right_layout:add(spacer)
@@ -328,6 +328,11 @@ globalkeys = awful.util.table.join(
     awful.key({}, "#122", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%-") end),
     awful.key({}, "#123", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%+") end),
 
+    --multimedia keys with playerctl
+    awful.key({}, "#173", function () awful.util.spawn_with_shell("playerctl previous") end),
+    awful.key({}, "#172", function () awful.util.spawn_with_shell("playerctl play-pause") end),
+    awful.key({}, "#171", function () awful.util.spawn_with_shell("playerctl next") end),
+
     --screen capture
     awful.key({}, "Print", function () awful.util.spawn_with_shell("xfce4-screenshooter") end)
 )
@@ -418,7 +423,6 @@ awful.rules.rules = {
     { rule = { class = "XTerm", instance = "startup" }, properties = { tag = tags[1][1] } },
     { rule = { class = "XTerm" }, properties = { size_hints_honor = false } },
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
-    { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
     { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][5] } },
     { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Chromium"}, properties = { tag = tags[1][2] } },
@@ -512,7 +516,7 @@ function run_once(prg,arg_string,pname,screen)
        pname = prg
     end
 
-    if not arg_string then 
+    if not arg_string then
         return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "' || (" .. prg .. ")",screen)
     else
         return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. " ".. arg_string .."' || (" .. prg .. " " .. arg_string .. ")",screen)
@@ -521,8 +525,6 @@ end
 
 
 run_once("xterm", "-r -name startup")
-run_once("pidgin")
 run_once("redshiftgui")
-run_once("subl3")
-    
+
 -- }}}
