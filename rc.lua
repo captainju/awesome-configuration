@@ -526,5 +526,6 @@ end
 
 run_once("xterm", "-r -name startup")
 run_once("redshiftgui")
+run_once("nm-applet")
 
 -- }}}
