@@ -334,7 +334,10 @@ globalkeys = awful.util.table.join(
     awful.key({}, "#171", function () awful.util.spawn_with_shell("playerctl next") end),
 
     --screen capture
-    awful.key({}, "Print", function () awful.util.spawn_with_shell("xfce4-screenshooter") end)
+    awful.key({}, "Print", function () awful.util.spawn_with_shell("xfce4-screenshooter") end),
+
+    --clients
+    awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end)
 )
 
 clientkeys = awful.util.table.join(
@@ -427,7 +430,7 @@ awful.rules.rules = {
     { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Chromium"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
-    { rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
+    --{ rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
     { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
 }
 -- }}}
