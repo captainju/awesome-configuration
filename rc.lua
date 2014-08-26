@@ -333,6 +333,10 @@ globalkeys = awful.util.table.join(
     awful.key({}, "#172", function () awful.util.spawn_with_shell("playerctl play-pause") end),
     awful.key({}, "#171", function () awful.util.spawn_with_shell("playerctl next") end),
 
+    -- Brightness
+    awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 15") end),
+    awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 15") end),
+
     --screen capture
     awful.key({}, "Print", function () awful.util.spawn_with_shell("xfce4-screenshooter") end),
 
@@ -432,6 +436,7 @@ awful.rules.rules = {
     { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
     --{ rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
     { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
+    { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
 }
 -- }}}
 
@@ -530,5 +535,3 @@ end
 run_once("xterm", "-r -name startup")
 run_once("redshiftgui")
 run_once("nm-applet")
-
--- }}}
