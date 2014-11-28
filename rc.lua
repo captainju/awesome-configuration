@@ -82,7 +82,7 @@ if beautiful.wallpaper then
     for s = 1, screen.count() do
         --gears.wallpaper.maximized(beautiful.wallpaper, s, true)
         --gears.wallpaper.maximized(home_path .. "Documents/autre/arch-blueprint_1920x1080.png", s, true)
-        gears.wallpaper.maximized(home_path .. "Documents/autre/arch_grad2-whiteblueongrey_1600x900.png", s, true)
+        gears.wallpaper.maximized(home_path .. "Documents/autre/WTF.jpg", s, true)
     end
 end
 -- }}}
@@ -274,7 +274,7 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
+    --awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -293,7 +293,7 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    -- awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
@@ -341,7 +341,8 @@ globalkeys = awful.util.table.join(
     awful.key({}, "Print", function () awful.util.spawn_with_shell("xfce4-screenshooter") end),
 
     --clients
-    awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end)
+    awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end),
+    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("dbus-launch thunar") end)
 )
 
 clientkeys = awful.util.table.join(
