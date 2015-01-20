@@ -94,7 +94,7 @@ tags = {
            '1:Xterm',
            '2:Chrome',
            '3:Firefox',
-           '4',
+           '4:Subl',
            '5:IDE',
            '6:DB',
            '7',
@@ -334,15 +334,20 @@ globalkeys = awful.util.table.join(
     awful.key({}, "#171", function () awful.util.spawn_with_shell("playerctl next") end),
 
     -- Brightness
-    awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 15") end),
-    awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 15") end),
+    awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 10") end),
+    awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 10") end),
 
     --screen capture
     awful.key({}, "Print", function () awful.util.spawn_with_shell("xfce4-screenshooter") end),
 
     --clients
     awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end),
-    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("dbus-launch thunar") end)
+    
+    --thunar
+    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("dbus-launch thunar") end),
+
+    --dual screen
+    awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/dual.sh") end)
 )
 
 clientkeys = awful.util.table.join(
