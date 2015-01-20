@@ -43,7 +43,7 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- Themes define colours, icons, and wallpapers
+-- Themes define colours, icons, font and wallpapers.
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
@@ -60,8 +60,7 @@ lockscreen_cmd = "xflock4"
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-local layouts =
-{
+awful.layout.layouts = {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
@@ -81,7 +80,6 @@ local layouts =
 if beautiful.wallpaper then
     for s = 1, screen.count() do
         --gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-        --gears.wallpaper.maximized(home_path .. "Documents/autre/arch-blueprint_1920x1080.png", s, true)
         gears.wallpaper.maximized(home_path .. "Documents/autre/WTF.jpg", s, true)
     end
 end
@@ -102,20 +100,20 @@ tags = {
            '9',
            },
  layout = {
-            layouts[3],   -- 1
-            layouts[1],   -- 2
-            layouts[1],   -- 3
-            layouts[1],  -- 4
-            layouts[1],  -- 5
-            layouts[1],  -- 6
-            layouts[1],  -- 7
-            layouts[1],  -- 8
-            layouts[1],  -- 9
+            awful.layout.layouts[2],   -- 1
+            awful.layout.layouts[1],   -- 2
+            awful.layout.layouts[1],   -- 3
+            awful.layout.layouts[1],  -- 4
+            awful.layout.layouts[1],  -- 5
+            awful.layout.layouts[1],  -- 6
+            awful.layout.layouts[1],  -- 7
+            awful.layout.layouts[1],  -- 8
+            awful.layout.layouts[1],  -- 9
           }
        }
 for s = 1, screen.count() do
- -- Each screen has its own tag table.
- tags[s] = awful.tag(tags.names, s, tags.layout)
+    -- Each screen has its own tag table.
+    tags[s] = awful.tag(tags.names, s, tags.layout)
 end
 -- }}}
 
@@ -204,10 +202,10 @@ for s = 1, screen.count() do
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
     mylayoutbox[s]:buttons(awful.util.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
-                           awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+                           awful.button({ }, 1, function () awful.layout.inc( 1) end),
+                           awful.button({ }, 3, function () awful.layout.inc(-1) end),
+                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
+                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     -- Create a taglist widget
     mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
 
@@ -230,7 +228,7 @@ for s = 1, screen.count() do
     right_layout:add(spacer)
     right_layout:add(memwidget)
     right_layout:add(spacer)
-	  right_layout:add(cpuwidget)
+    right_layout:add(cpuwidget)
     right_layout:add(spacer)
     right_layout:add(baticon)
     right_layout:add(batpct)
@@ -254,7 +252,9 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end)
+    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    awful.button({ }, 4, awful.tag.viewnext),
+    awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
 
@@ -301,8 +301,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1) end),
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1) end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
@@ -375,6 +375,7 @@ clientkeys = awful.util.table.join(
 -- This should map on the top row of your keyboard, usually 1 to 9.
 for i = 1, 9 do
     globalkeys = awful.util.table.join(globalkeys,
+        -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
                   function ()
                         local screen = mouse.screen
@@ -383,6 +384,7 @@ for i = 1, 9 do
                            awful.tag.viewonly(tag)
                         end
                   end),
+        -- Toggle tag.
         awful.key({ modkey, "Control" }, "#" .. i + 9,
                   function ()
                       local screen = mouse.screen
@@ -391,6 +393,7 @@ for i = 1, 9 do
                          awful.tag.viewtoggle(tag)
                       end
                   end),
+        -- Move client to tag.
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
@@ -400,6 +403,7 @@ for i = 1, 9 do
                           end
                      end
                   end),
+        -- Toggle tag.
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
@@ -421,12 +425,14 @@ root.keys(globalkeys)
 -- }}}
 
 -- {{{ Rules
+-- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
+                     raise = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
     { rule = { class = "MPlayer" }, properties = { floating = true } },
@@ -448,16 +454,8 @@ awful.rules.rules = {
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
-client.connect_signal("manage", function (c, startup)
-    -- Enable sloppy focus
-    c:connect_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
-
-    if not startup then
+client.connect_signal("manage", function (c)
+    if not awesome.startup then
         -- Set the windows at the slave,
         -- i.e. put it at the end of others instead of setting it master.
         -- awful.client.setslave(c)
@@ -467,6 +465,9 @@ client.connect_signal("manage", function (c, startup)
             awful.placement.no_overlap(c)
             awful.placement.no_offscreen(c)
         end
+    elseif not c.size_hints.user_position and not c.size_hints.program_position then
+        -- Prevent clients from being unreachable after screen count change
+        awful.placement.no_offscreen(c)
     end
 
     local titlebars_enabled = false
@@ -512,6 +513,14 @@ client.connect_signal("manage", function (c, startup)
         layout:set_middle(middle_layout)
 
         awful.titlebar(c):set_widget(layout)
+    end
+end)
+
+-- Enable sloppy focus
+client.connect_signal("mouse::enter", function(c)
+    if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+        and awful.client.focus.filter(c) then
+        client.focus = c
     end
 end)
 
