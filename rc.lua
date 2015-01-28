@@ -100,7 +100,7 @@ tags = {
            '9',
            },
  layout = {
-            awful.layout.layouts[2],   -- 1
+            awful.layout.layouts[3],   -- 1
             awful.layout.layouts[1],   -- 2
             awful.layout.layouts[1],   -- 3
             awful.layout.layouts[1],  -- 4
@@ -443,6 +443,7 @@ awful.rules.rules = {
     { rule = { class = "XTerm" }, properties = { size_hints_honor = false } },
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
     { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][5] } },
+    { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
     { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Chromium"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
