@@ -100,7 +100,7 @@ tags = {
            '9',
            },
  layout = {
-            awful.layout.layouts[3],   -- 1
+            awful.layout.layouts[6],   -- 1
             awful.layout.layouts[1],   -- 2
             awful.layout.layouts[1],   -- 3
             awful.layout.layouts[1],  -- 4
