@@ -10,9 +10,11 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+local drop      = require("scratchdrop")
+local lain      = require("lain")
 
-vicious = require("vicious")
-local wi = require("wi")
+-- vicious = require("vicious")
+-- local wi = require("wi")
 
 --Configure home path so you dont have too
 home_path  = os.getenv('HOME') .. '/'
@@ -43,8 +45,12 @@ end
 -- }}}
 
 -- {{{ Variable definitions
+-- localization
+os.setlocale(os.getenv("LANG"))
+
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+-- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/multicolor/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm -r"
@@ -89,11 +95,11 @@ end
 -- Define a tag table which hold all screen tags.
 tags = {
  names  = {
-           '1:Xterm',
-           '2:Chrome',
-           '3:Firefox',
-           '4:Subl',
-           '5:IDE',
+           '1',
+           '2',
+           '3',
+           '4',
+           '5',
            '6',
            '7',
            '8',
@@ -142,8 +148,105 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- {{{ Wibox
--- Create a textclock widget
-mytextclock = awful.widget.textclock()
+markup      = lain.util.markup
+
+-- Textclock
+clockicon = wibox.widget.imagebox(beautiful.widget_clock)
+mytextclock = awful.widget.textclock(markup("#7788af", "%A %d %B ") .. markup("#de5e1e", " %H:%M"))
+
+-- Weather
+weathericon = wibox.widget.imagebox(beautiful.widget_weather)
+yawn = lain.widgets.yawn(123456, {
+    settings = function()
+        widget:set_markup(markup("#eca4c4", forecast:lower() .. " " .. units .. "°C"))
+    end
+})
+
+-- / fs
+fsicon = wibox.widget.imagebox(beautiful.widget_fs)
+fswidget = lain.widgets.fs({
+    settings  = function()
+        widget:set_markup(markup("#80d9d8", fs_now.used .. "%"))
+    end
+})
+
+-- CPU
+cpuicon = wibox.widget.imagebox()
+cpuicon:set_image(beautiful.widget_cpu)
+cpuwidget = lain.widgets.cpu({
+    settings = function()
+        widget:set_markup(markup("#e33a6e", cpu_now.usage .. "%"))
+    end
+})
+
+-- Coretemp
+tempicon = wibox.widget.imagebox(beautiful.widget_temp)
+tempwidget = lain.widgets.temp({
+    settings = function()
+        widget:set_markup(markup("#f1af5f", coretemp_now .. "°C"))
+    end
+})
+
+-- Battery
+baticon = wibox.widget.imagebox(beautiful.widget_batt)
+batwidget = lain.widgets.bat({
+    settings = function()
+        if bat_now.perc == "N/A" then
+            bat_now.perc = "AC"
+        else
+            bat_now.perc = bat_now.perc .. "%"
+        end
+        widget:set_text(bat_now.perc)
+    end
+})
+
+-- ALSA volume
+volicon = wibox.widget.imagebox(beautiful.widget_vol)
+volumewidget = lain.widgets.alsa({
+    settings = function()
+        if volume_now.status == "off" then
+            widget:set_markup(markup("#7493d2", "off"))
+        else
+            widget:set_markup(markup("#7493d2", volume_now.level .. "%"))
+        end
+
+        
+    end
+})
+
+-- Net
+netdownicon = wibox.widget.imagebox(beautiful.widget_netdown)
+--netdownicon.align = "middle"
+netdowninfo = wibox.widget.textbox()
+netupicon = wibox.widget.imagebox(beautiful.widget_netup)
+--netupicon.align = "middle"
+netupinfo = lain.widgets.net({
+    settings = function()
+        if iface ~= "network off" and
+           string.match(yawn.widget._layout.text, "N/A")
+        then
+            yawn.fetch_weather()
+        end
+
+        widget:set_markup(markup("#e54c62", net_now.sent ))
+        netdowninfo:set_markup(markup("#87af5f", net_now.received ))
+    end
+})
+
+-- MEM
+memicon = wibox.widget.imagebox(beautiful.widget_mem)
+memwidget = lain.widgets.mem({
+    settings = function()
+        widget:set_markup(markup("#e0da37", mem_now.used ))
+    end
+})
+
+-- Spacer
+spacer = wibox.widget.textbox(" ")
+
+-- }}}
+
+-- {{{ Layout
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -196,8 +299,11 @@ mytasklist.buttons = awful.util.table.join(
                                           end))
 
 for s = 1, screen.count() do
+
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
+
+
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
@@ -225,17 +331,25 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
 
-    right_layout:add(spacer)
-    right_layout:add(memwidget)
-    right_layout:add(spacer)
-    right_layout:add(cpuwidget)
-    right_layout:add(spacer)
-    right_layout:add(baticon)
-    right_layout:add(batpct)
-    right_layout:add(spacer)
+    right_layout:add(netdownicon)
+    right_layout:add(netdowninfo)
+    right_layout:add(netupicon)
+    right_layout:add(netupinfo)
     right_layout:add(volicon)
-    right_layout:add(volpct)
-    right_layout:add(spacer)
+    right_layout:add(volumewidget)
+    right_layout:add(memicon)
+    right_layout:add(memwidget)
+    right_layout:add(cpuicon)
+    right_layout:add(cpuwidget)
+    right_layout:add(fsicon)
+    right_layout:add(fswidget)
+    right_layout:add(weathericon)
+    right_layout:add(yawn.widget)
+    right_layout:add(tempicon)
+    right_layout:add(tempwidget)
+    right_layout:add(baticon)
+    right_layout:add(batwidget)
+    right_layout:add(clockicon)
     right_layout:add(mytextclock)
 
     right_layout:add(mylayoutbox[s])
@@ -324,9 +438,9 @@ globalkeys = awful.util.table.join(
 
     --sound
     -- 121 122 123 mute down up
-    awful.key({}, "#121", function () awful.util.spawn_with_shell("amixer -q set Master toggle") end),
-    awful.key({}, "#122", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%-") end),
-    awful.key({}, "#123", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%+") end),
+    awful.key({}, "#121", function () awful.util.spawn_with_shell("amixer -q set Master toggle") volumewidget.update() end),
+    awful.key({}, "#122", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%-") volumewidget.update() end),
+    awful.key({}, "#123", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%+") volumewidget.update() end),
 
     --multimedia keys with playerctl
     awful.key({}, "#173", function () awful.util.spawn_with_shell("playerctl previous") end),
