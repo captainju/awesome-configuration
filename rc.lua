@@ -56,7 +56,7 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/multicolor/theme.lu
 terminal = "xterm -r"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
-lockscreen_cmd = "xflock4"
+lockscreen_cmd = "sxlock"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
