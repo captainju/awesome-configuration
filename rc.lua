@@ -154,14 +154,6 @@ markup      = lain.util.markup
 clockicon = wibox.widget.imagebox(beautiful.widget_clock)
 mytextclock = awful.widget.textclock(markup("#7788af", "%A %d %B ") .. markup("#de5e1e", " %H:%M"))
 
--- Weather
-weathericon = wibox.widget.imagebox(beautiful.widget_weather)
-yawn = lain.widgets.yawn(123456, {
-    settings = function()
-        widget:set_markup(markup("#eca4c4", forecast:lower() .. " " .. units .. "°C"))
-    end
-})
-
 -- / fs
 fsicon = wibox.widget.imagebox(beautiful.widget_fs)
 fswidget = lain.widgets.fs({
@@ -222,12 +214,6 @@ netupicon = wibox.widget.imagebox(beautiful.widget_netup)
 --netupicon.align = "middle"
 netupinfo = lain.widgets.net({
     settings = function()
-        if iface ~= "network off" and
-           string.match(yawn.widget._layout.text, "N/A")
-        then
-            yawn.fetch_weather()
-        end
-
         widget:set_markup(markup("#e54c62", net_now.sent ))
         netdowninfo:set_markup(markup("#87af5f", net_now.received ))
     end
@@ -342,8 +328,6 @@ for s = 1, screen.count() do
     right_layout:add(cpuwidget)
     right_layout:add(fsicon)
     right_layout:add(fswidget)
-    right_layout:add(weathericon)
-    right_layout:add(yawn.widget)
     right_layout:add(tempicon)
     right_layout:add(tempwidget)
     right_layout:add(baticon)
