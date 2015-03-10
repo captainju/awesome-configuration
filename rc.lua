@@ -53,7 +53,7 @@ os.setlocale(os.getenv("LANG"))
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/multicolor/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm -r"
+terminal = "urxvt"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 lockscreen_cmd = "sxlock"
@@ -538,8 +538,8 @@ awful.rules.rules = {
     { rule = { class = "pinentry" }, properties = { floating = true } },
     { rule = { class = "gimp" }, properties = { floating = true } },
     { rule = { class = "Thunar" }, properties = { floating = true } },
-    { rule = { class = "XTerm", instance = "startup" }, properties = { tag = tags[1][1] } },
-    { rule = { class = "XTerm" }, properties = { size_hints_honor = false } },
+    { rule = { class = "URxvt", instance = "startup" }, properties = { tag = tags[1][1] } },
+    { rule = { class = "URxvt" }, properties = { size_hints_honor = false } },
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
     { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][5] } },
     { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
@@ -647,6 +647,6 @@ function run_once(prg,arg_string,pname,screen)
 end
 
 
-run_once("xterm", "-r -name startup")
+run_once(terminal, " -name startup")
 run_once("redshiftgui")
 run_once("nm-applet")
