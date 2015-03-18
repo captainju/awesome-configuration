@@ -647,6 +647,6 @@ function run_once(prg,arg_string,pname,screen)
 end
 
 
-run_once(terminal, " -name startup")
+run_once(terminal, "-name startup")
 run_once("redshiftgui")
 run_once("nm-applet")
