@@ -424,8 +424,8 @@ globalkeys = awful.util.table.join(
     --sound
     -- 121 122 123 mute down up
     awful.key({}, "#121", function () awful.util.spawn_with_shell("amixer -q set Master toggle") volumewidget.update() end),
-    awful.key({}, "#122", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%-") volumewidget.update() end),
-    awful.key({}, "#123", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 6%+") volumewidget.update() end),
+    awful.key({}, "#122", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 4%-") volumewidget.update() end),
+    awful.key({}, "#123", function () awful.util.spawn_with_shell("amixer -q -c 0 sset Master,0 4%+") volumewidget.update() end),
 
     --multimedia keys with playerctl
     awful.key({}, "#173", function () awful.util.spawn_with_shell("playerctl previous") end),
@@ -437,13 +437,13 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 10") end),
 
     --screen capture
-    awful.key({}, "Print", function () awful.util.spawn_with_shell("xfce4-screenshooter") end),
+    awful.key({}, "Print", function () awful.util.spawn_with_shell("screengrab") end),
 
     --clients
     awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end),
     
-    --thunar
-    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("dbus-launch thunar") end),
+    --pcmanfm
+    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("pcmanfm") end),
 
     --dual screen
     awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/dual.sh") end)
@@ -537,7 +537,7 @@ awful.rules.rules = {
     { rule = { class = "MPlayer" }, properties = { floating = true } },
     { rule = { class = "pinentry" }, properties = { floating = true } },
     { rule = { class = "gimp" }, properties = { floating = true } },
-    { rule = { class = "Thunar" }, properties = { floating = true } },
+    { rule = { class = "Pcmanfm" }, properties = { floating = true } },
     { rule = { class = "URxvt", instance = "startup" }, properties = { tag = tags[1][1] } },
     { rule = { class = "URxvt" }, properties = { size_hints_honor = false } },
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
