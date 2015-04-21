@@ -421,6 +421,9 @@ globalkeys = awful.util.table.join(
     --lock screen
     awful.key({ modkey,           }, "Delete", function () awful.util.spawn(lockscreen_cmd) end),
 
+    --lock inputs
+    awful.key({ }, "#78", function () awful.util.spawn("xtrlock") end),
+
     --sound
     -- 121 122 123 mute down up
     awful.key({}, "#121", function () awful.util.spawn_with_shell("amixer -q set Master toggle") volumewidget.update() end),
@@ -445,8 +448,8 @@ globalkeys = awful.util.table.join(
     --pcmanfm
     awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("pcmanfm") end),
 
-    --dual screen
-    awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/dual.sh") end)
+    --auto display screen
+    awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/auto_display.sh") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -650,3 +653,4 @@ end
 run_once(terminal, "-name startup")
 run_once("redshiftgui")
 run_once("nm-applet")
+run_once("pcmanfm", "-d")
