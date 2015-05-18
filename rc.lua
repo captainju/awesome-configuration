@@ -401,11 +401,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end),
 
     --lock screen
-    --awful.key({ modkey,           }, "Delete", function () awful.util.spawn(lockscreen_cmd) end),
-    awful.key({ }, "#78", function () awful.util.spawn(lockscreen_cmd) end),
-
-    --lock inputs
-    -- awful.key({ }, "#78", function () awful.util.spawn("xtrlock") end),
+    awful.key({ modkey,           }, "Delete", function () awful.util.spawn(lockscreen_cmd) end),
 
     --lock inputs
     awful.key({ }, "#78", function () awful.util.spawn("xtrlock") end),
