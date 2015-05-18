@@ -10,14 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
-local drop      = require("scratchdrop")
 local lain      = require("lain")
-
--- vicious = require("vicious")
--- local wi = require("wi")
-
---Configure home path so you dont have too
-home_path  = os.getenv('HOME') .. '/'
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -45,9 +38,6 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- localization
-os.setlocale(os.getenv("LANG"))
-
 -- Themes define colours, icons, font and wallpapers.
 -- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/multicolor/theme.lua")
@@ -86,7 +76,7 @@ awful.layout.layouts = {
 --if beautiful.wallpaper then
     for s = 1, screen.count() do
         --gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-        gears.wallpaper.maximized(home_path .. "Documents/autre/Rainbows_by_vladstudio.jpg", s, true)
+        gears.wallpaper.maximized(os.getenv("HOME") .. "/Documents/autre/[WP] Mosaic [textless].jpg", s, true)
     end
 --end
 -- }}}
@@ -126,9 +116,6 @@ end
 -- {{{ Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
-   -- { "manual", terminal .. " -e man awesome" },
-   -- { "edit config", editor_cmd .. " " .. awesome.conffile },
-   -- { "restart", awesome.restart },
    { "quit", awesome.quit },
    { "poweroff", "systemctl poweroff" },
    { "reboot", "systemctl reboot" },
@@ -208,10 +195,10 @@ volumewidget = lain.widgets.alsa({
 
 -- Net
 netdownicon = wibox.widget.imagebox(beautiful.widget_netdown)
---netdownicon.align = "middle"
+netdownicon.align = "middle"
 netdowninfo = wibox.widget.textbox()
 netupicon = wibox.widget.imagebox(beautiful.widget_netup)
---netupicon.align = "middle"
+netupicon.align = "middle"
 netupinfo = lain.widgets.net({
     settings = function()
         widget:set_markup(markup("#e54c62", net_now.sent ))
@@ -285,11 +272,8 @@ mytasklist.buttons = awful.util.table.join(
                                           end))
 
 for s = 1, screen.count() do
-
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
-
-
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
@@ -315,7 +299,6 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-
     right_layout:add(netdownicon)
     right_layout:add(netdowninfo)
     right_layout:add(netupicon)
@@ -336,7 +319,6 @@ for s = 1, screen.count() do
     right_layout:add(mytextclock)
 
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-
     right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
@@ -419,7 +401,11 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end),
 
     --lock screen
-    awful.key({ modkey,           }, "Delete", function () awful.util.spawn(lockscreen_cmd) end),
+    --awful.key({ modkey,           }, "Delete", function () awful.util.spawn(lockscreen_cmd) end),
+    awful.key({ }, "#78", function () awful.util.spawn(lockscreen_cmd) end),
+
+    --lock inputs
+    -- awful.key({ }, "#78", function () awful.util.spawn("xtrlock") end),
 
     --lock inputs
     awful.key({ }, "#78", function () awful.util.spawn("xtrlock") end),
