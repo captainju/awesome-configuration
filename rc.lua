@@ -317,6 +317,7 @@ for s = 1, screen.count() do
     right_layout:add(batwidget)
     right_layout:add(clockicon)
     right_layout:add(mytextclock)
+    right_layout:add(spacer)
 
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mylayoutbox[s])
@@ -427,8 +428,8 @@ globalkeys = awful.util.table.join(
     --clients
     awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end),
     
-    --pcmanfm
-    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("pcmanfm") end),
+    --spaceFM
+    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("spacefm") end),
 
     --auto display screen
     awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/auto_display.sh") end)
@@ -522,7 +523,7 @@ awful.rules.rules = {
     { rule = { class = "MPlayer" }, properties = { floating = true } },
     { rule = { class = "pinentry" }, properties = { floating = true } },
     { rule = { class = "gimp" }, properties = { floating = true } },
-    { rule = { class = "Pcmanfm" }, properties = { floating = true } },
+    { rule = { class = "Spacefm" }, properties = { floating = true } },
     { rule = { class = "URxvt", instance = "startup" }, properties = { tag = tags[1][1] } },
     { rule = { class = "URxvt" }, properties = { size_hints_honor = false } },
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
@@ -635,4 +636,3 @@ end
 run_once(terminal, "-name startup")
 run_once("redshiftgui")
 run_once("nm-applet")
-run_once("pcmanfm", "-d")
