@@ -428,8 +428,8 @@ globalkeys = awful.util.table.join(
     --clients
     awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end),
     
-    --spaceFM
-    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("spacefm") end),
+    --thunar
+    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("thunar") end),
 
     --auto display screen
     awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/auto_display.sh") end)
@@ -523,7 +523,7 @@ awful.rules.rules = {
     { rule = { class = "MPlayer" }, properties = { floating = true } },
     { rule = { class = "pinentry" }, properties = { floating = true } },
     { rule = { class = "gimp" }, properties = { floating = true } },
-    { rule = { class = "Spacefm" }, properties = { floating = true } },
+    { rule = { class = "Thunar" }, properties = { floating = true } },
     { rule = { class = "URxvt", instance = "startup" }, properties = { tag = tags[1][1] } },
     { rule = { class = "URxvt" }, properties = { size_hints_honor = false } },
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
@@ -535,6 +535,7 @@ awful.rules.rules = {
     --{ rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
     { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
     { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
+    { rule = { class = "KeePass2"}, properties = { tag = tags[1][9] } },
 }
 -- }}}
 
