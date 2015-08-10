@@ -17,6 +17,7 @@ local wibox        = require("wibox")
 local os           = { execute  = os.execute,
                        getenv   = os.getenv }
 local math         = { floor    = math.floor }
+local mouse        = mouse
 local string       = { format   = string.format,
                        match    = string.match,
                        gmatch   = string.gmatch }
@@ -36,11 +37,13 @@ local function worker(args)
     local music_dir   = args.music_dir or os.getenv("HOME") .. "/Music"
     local cover_size  = args.cover_size or 100
     local default_art = args.default_art or ""
+    local followmouse = args.followmouse or false
+    local echo_cmd    = args.echo_cmd or "echo"
     local settings    = args.settings or function() end
 
     local mpdcover = helpers.scripts_dir .. "mpdcover"
     local mpdh = "telnet://" .. host .. ":" .. port
-    local echo = "echo 'password " .. password .. "\nstatus\ncurrentsong\nclose'"
+    local echo = echo_cmd .. " 'password " .. password .. "\nstatus\ncurrentsong\nclose'"
 
     mpd.widget = wibox.widget.textbox('')
 
@@ -64,7 +67,7 @@ local function worker(args)
                 elapsed = "N/A"
             }
 
-            for line in f:lines() do
+            for line in string.gmatch(f, "[^\n]+") do
                 for k, v in string.gmatch(line, "([%w]+):[%s](.*)$") do
                     if     k == "state"   then mpd_now.state   = v
                     elseif k == "file"    then mpd_now.file    = v
@@ -89,12 +92,22 @@ local function worker(args)
                 then
                     helpers.set_map("current mpd track", mpd_now.title)
 
-                    os.execute(string.format("%s %q %q %d %q", mpdcover, music_dir,
-                               mpd_now.file, cover_size, default_art))
+                    if string.match(mpd_now.file, "http.*://") == nil
+                    then -- local file
+                        os.execute(string.format("%s %q %q %d %q", mpdcover, music_dir,
+                                   mpd_now.file, cover_size, default_art))
+                        current_icon = "/tmp/mpdcover.png"
+                    else -- http stream
+                        current_icon = default_art
+                    end
+
+                    if followmouse then
+                        mpd_notification_preset.screen = mouse.screen
+                    end
 
                     mpd.id = naughty.notify({
                         preset = mpd_notification_preset,
-                        icon = "/tmp/mpdcover.png",
+                        icon = current_icon,
                         replaces_id = mpd.id,
                     }).id
                 end

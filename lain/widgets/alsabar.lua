@@ -15,6 +15,7 @@ local naughty      = require("naughty")
 
 local io           = { popen  = io.popen }
 local math         = { modf   = math.modf }
+local mouse        = mouse
 local string       = { format = string.format,
                        match  = string.match,
                        rep    = string.rep }
@@ -25,7 +26,6 @@ local setmetatable = setmetatable
 -- ALSA volume bar
 -- lain.widgets.alsabar
 local alsabar = {
-    card    = "0",
     channel = "Master",
     step    = "2%",
 
@@ -56,7 +56,7 @@ function alsabar.notify()
     local preset = {
         title   = "",
         text    = "",
-        timeout = 4,
+        timeout = 5,
         screen  = alsabar.notifications.screen,
         font    = alsabar.notifications.font .. " " ..
                   alsabar.notifications.font_size,
@@ -70,9 +70,15 @@ function alsabar.notify()
         preset.title = alsabar.channel .. " - " .. alsabar._current_level .. "%"
     end
 
-    local int = math.modf((alsabar._current_level / 100) * alsabar.notifications.bar_size)
-    preset.text = string.format("[%s%s]", string.rep("|", int),
-                  string.rep(" ", alsabar.notifications.bar_size - int))
+    int = math.modf((alsabar._current_level / 100) * alsabar.notifications.bar_size)
+    preset.text = "["
+                .. string.rep("|", int)
+                .. string.rep(" ", alsabar.notifications.bar_size - int)
+                .. "]"
+
+    if alsabar.followmouse then
+        preset.screen = mouse.screen
+    end
 
     if alsabar._notify ~= nil then
         alsabar._notify = naughty.notify ({
@@ -87,20 +93,21 @@ function alsabar.notify()
 end
 
 local function worker(args)
-    local args = args or {}
-    local timeout = args.timeout or 4
-    local settings = args.settings or function() end
-    local width = args.width or 63
-    local height = args.heigth or 1
-    local ticks = args.ticks or false
+    local args       = args or {}
+    local timeout    = args.timeout or 5
+    local settings   = args.settings or function() end
+    local width      = args.width or 63
+    local height     = args.heigth or 1
+    local ticks      = args.ticks or false
     local ticks_size = args.ticks_size or 7
-    local vertical = args.vertical or false
+    local vertical   = args.vertical or false
 
-    alsabar.card = args.card or alsabar.card
-    alsabar.channel = args.channel or alsabar.channel
-    alsabar.step = args.step or alsabar.step
-    alsabar.colors = args.colors or alsabar.colors
+    alsabar.cmd           = args.cmd or "amixer"
+    alsabar.channel       = args.channel or alsabar.channel
+    alsabar.step          = args.step or alsabar.step
+    alsabar.colors        = args.colors or alsabar.colors
     alsabar.notifications = args.notifications or alsabar.notifications
+    alsabar.followmouse   = args.followmouse or false
 
     alsabar.bar = awful.widget.progressbar()
 
@@ -115,8 +122,8 @@ local function worker(args)
 
     function alsabar.update()
         -- Get mixer control contents
-        local f = assert(io.popen(string.format("amixer -c %s -M get %s", alsabar.card, alsabar.channel)))
-        local mixer = f:read("*a")
+        local f = assert(io.popen(string.format("%s get %s", alsabar.cmd, alsabar.channel)))
+        local mixer = f:read("*all")
         f:close()
 
         -- Capture mixer control state:          [5%] ... ... [on]
@@ -146,25 +153,27 @@ local function worker(args)
         settings()
     end
 
-    newtimer("alsabar", timeout, alsabar.update)
-
     alsabar.bar:buttons (awful.util.table.join (
           awful.button ({}, 1, function()
             awful.util.spawn(alsabar.mixer)
           end),
           awful.button ({}, 3, function()
-            awful.util.spawn(string.format("amixer -c %s set %s toggle", alsabar.card, alsabar.channel))
+            awful.util.spawn(string.format("%s set %s toggle", alsabar.cmd, alsabar.channel))
             alsabar.update()
           end),
           awful.button ({}, 4, function()
-            awful.util.spawn(string.format("amixer -c %s set %s %s+", alsabar.card, alsabar.channel, alsabar.step))
+            awful.util.spawn(string.format("%s set %s %s+", alsabar.cmd, alsabar.channel, alsabar.step))
             alsabar.update()
           end),
           awful.button ({}, 5, function()
-            awful.util.spawn(string.format("amixer -c %s set %s %s-", alsabar.card, alsabar.channel, alsabar.step))
+            awful.util.spawn(string.format("%s set %s %s-", alsabar.cmd, alsabar.channel, alsabar.step))
             alsabar.update()
           end)
     ))
+
+    timer_id = string.format("alsabar-%s-%s", alsabar.cmd, alsabar.channel)
+
+    newtimer(timer_id, timeout, alsabar.update)
 
     return alsabar
 end
