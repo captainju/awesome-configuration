@@ -10,7 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
-local lain      = require("lain")
+local lain = require("lain")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -536,6 +536,7 @@ awful.rules.rules = {
     { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
     { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
     { rule = { class = "KeePass2"}, properties = { tag = tags[1][9] } },
+    { rule = { class = "Clementine"}, properties = { tag = tags[1][9] } },
 }
 -- }}}
 
