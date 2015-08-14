@@ -529,7 +529,7 @@ awful.rules.rules = {
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
     { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][5] } },
     { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
-    { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
+    { rule = { class = "google-chrome-unstable"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Chromium"}, properties = { tag = tags[1][2] } },
     { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
     --{ rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
@@ -537,6 +537,7 @@ awful.rules.rules = {
     { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
     { rule = { class = "KeePass2"}, properties = { tag = tags[1][9] } },
     { rule = { class = "Clementine"}, properties = { tag = tags[1][9] } },
+    { rule = { class = "wync"}, properties = { tag = tags[1][8] } },
 }
 -- }}}
 
