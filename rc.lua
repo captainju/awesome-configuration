@@ -537,7 +537,7 @@ awful.rules.rules = {
     { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
     { rule = { class = "KeePass2"}, properties = { tag = tags[1][9] } },
     { rule = { class = "Clementine"}, properties = { tag = tags[1][9] } },
-    { rule = { class = "wync"}, properties = { tag = tags[1][8] } },
+    { rule = { class = "Wync"}, properties = { tag = tags[1][8] } },
 }
 -- }}}
 
