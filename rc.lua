@@ -11,6 +11,7 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local lain = require("lain")
+local drop = require("scratchdrop")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -430,6 +431,9 @@ globalkeys = awful.util.table.join(
     
     --thunar
     awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("thunar") end),
+
+    -- Dropdown terminal
+    awful.key({ modkey }, "z", function () drop(terminal) end),
 
     --auto display screen
     awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/auto_display.sh") end)
