@@ -108,6 +108,8 @@ local function worker(args)
                 elseif perc < 0 then
                     bat_now.perc = "0"
                 end
+            elseif tonumber(bat_now.perc) > 100 then
+                bat_now.perc = "100"
             end
 
             if rate ~= nil and ratev ~= nil then

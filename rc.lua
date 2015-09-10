@@ -77,7 +77,7 @@ awful.layout.layouts = {
 --if beautiful.wallpaper then
     for s = 1, screen.count() do
         --gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-        gears.wallpaper.maximized(os.getenv("HOME") .. "/Documents/autre/[WP] Mosaic [textless].jpg", s, true)
+        gears.wallpaper.maximized(os.getenv("HOME") .. "/Documents/autre/curves-abstract.jpg", s, true)
     end
 --end
 -- }}}
@@ -101,7 +101,7 @@ tags = {
             awful.layout.layouts[1],   -- 2
             awful.layout.layouts[1],   -- 3
             awful.layout.layouts[1],  -- 4
-            awful.layout.layouts[1],  -- 5
+            awful.layout.layouts[6],  -- 5
             awful.layout.layouts[1],  -- 6
             awful.layout.layouts[1],  -- 7
             awful.layout.layouts[1],  -- 8
@@ -404,9 +404,10 @@ globalkeys = awful.util.table.join(
 
     --lock screen
     awful.key({ modkey,           }, "Delete", function () awful.util.spawn(lockscreen_cmd) end),
+    awful.key({}, "XF86Sleep", function () awful.util.spawn(lockscreen_cmd) end),
 
     --lock inputs
-    awful.key({ }, "#78", function () awful.util.spawn("xtrlock") end),
+    awful.key({}, "#78", function () awful.util.spawn("xtrlock") end),
 
     --sound
     -- 121 122 123 mute down up
@@ -431,6 +432,7 @@ globalkeys = awful.util.table.join(
     
     --thunar
     awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("thunar") end),
+    awful.key({}, "XF86Explorer", function () awful.util.spawn_with_shell("thunar") end),
 
     -- Dropdown terminal
     awful.key({ modkey }, "z", function () drop(terminal) end),
@@ -641,5 +643,6 @@ end
 
 
 run_once(terminal, "-name startup")
-run_once("redshiftgui")
+run_once("redshift")
 run_once("nm-applet")
+run_once("unclutter")
