@@ -437,6 +437,9 @@ globalkeys = awful.util.table.join(
     -- Dropdown terminal
     awful.key({ modkey }, "z", function () drop(terminal) end),
 
+    -- Start a few progs
+    awful.key({ modkey }, "s", function () start_ping() end),
+
     --auto display screen
     awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/auto_display.sh") end)
 )
@@ -646,3 +649,12 @@ run_once(terminal, "-name startup")
 run_once("redshift")
 run_once("nm-applet")
 run_once("unclutter")
+
+-- {{{ start a few programs
+function start_ping()
+    run_once("google-chrome-unstable", "", ".*chrome.*")
+    run_once("firefox-aurora")
+    run_once("keepass", nil, "mono /usr/share/keepass/KeePass.exe")
+    run_once("wync", nil, "/usr/bin/sh /opt/wync_linux/man.sh")
+    run_once("intellij-idea-ultimate-edition", nil, "/bin/sh /usr/share/intellij-idea-ultimate-edition/bin/idea.sh")
+end
