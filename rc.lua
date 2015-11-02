@@ -648,7 +648,7 @@ end
 run_once(terminal, "-name startup")
 run_once("redshift")
 run_once("nm-applet")
-run_once("unclutter")
+run_once("unclutter", "--timeout 1")
 
 -- {{{ start a few programs
 function start_ping()
