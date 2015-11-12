@@ -546,7 +546,6 @@ awful.rules.rules = {
     { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
     { rule = { class = "KeePass2"}, properties = { tag = tags[1][9] } },
     { rule = { class = "Clementine"}, properties = { tag = tags[1][9] } },
-    { rule = { class = "Wync"}, properties = { tag = tags[1][8] } },
 }
 -- }}}
 
@@ -655,6 +654,5 @@ function start_ping()
     run_once("google-chrome-unstable", "", ".*chrome.*")
     run_once("firefox-aurora")
     run_once("keepass", nil, "mono /usr/share/keepass/KeePass.exe")
-    run_once("wync", nil, "/usr/bin/sh /opt/wync_linux/man.sh")
     run_once("intellij-idea-ultimate-edition", nil, "/bin/sh /usr/share/intellij-idea-ultimate-edition/bin/idea.sh")
 end
