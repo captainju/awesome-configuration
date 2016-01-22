@@ -140,7 +140,7 @@ markup      = lain.util.markup
 
 -- Textclock
 clockicon = wibox.widget.imagebox(beautiful.widget_clock)
-mytextclock = awful.widget.textclock(markup("#7788af", "%A %d %B ") .. markup("#de5e1e", " %H:%M"))
+mytextclock = awful.widget.textclock(markup("#7788af", "%a %d %b ") .. markup("#de5e1e", " %H:%M"))
 
 -- / fs
 fsicon = wibox.widget.imagebox(beautiful.widget_fs)
@@ -544,7 +544,6 @@ awful.rules.rules = {
     --{ rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
     { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
     { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
-    { rule = { class = "KeePass2"}, properties = { tag = tags[1][9] } },
     { rule = { class = "Clementine"}, properties = { tag = tags[1][9] } },
 }
 -- }}}
@@ -637,9 +636,9 @@ function run_once(prg,arg_string,pname,screen)
     end
 
     if not arg_string then
-        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "' || (" .. prg .. ")",screen)
+        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "'; or " .. prg .. "",screen)
     else
-        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. " ".. arg_string .."' || (" .. prg .. " " .. arg_string .. ")",screen)
+        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. " ".. arg_string .."'; or " .. prg .. " " .. arg_string .. "",screen)
     end
 end
 
@@ -651,8 +650,7 @@ run_once("unclutter", "--timeout 1")
 
 -- {{{ start a few programs
 function start_ping()
-    run_once("google-chrome-unstable", "", ".*chrome.*")
-    run_once("firefox-aurora")
-    run_once("keepass", nil, "mono /usr/share/keepass/KeePass.exe")
+    run_once("google-chrome-unstable", nil, "/opt/google/chrome-unstable/chrome.*")
+    run_once("firefox")
     run_once("intellij-idea-ultimate-edition", nil, "/bin/sh /usr/share/intellij-idea-ultimate-edition/bin/idea.sh")
 end
