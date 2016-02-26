@@ -421,8 +421,8 @@ globalkeys = awful.util.table.join(
     awful.key({}, "#171", function () awful.util.spawn_with_shell("playerctl next") end),
 
     -- Brightness
-    awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 10") end),
-    awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 10") end),
+    awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -time 1 -steps 1 -dec 10") end),
+    awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -time 1 -steps 1 -inc 10") end),
 
     --screen capture
     awful.key({}, "Print", function () awful.util.spawn_with_shell("screengrab") end),
