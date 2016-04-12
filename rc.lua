@@ -100,8 +100,8 @@ tags = {
             awful.layout.layouts[6],   -- 1
             awful.layout.layouts[1],   -- 2
             awful.layout.layouts[1],   -- 3
-            awful.layout.layouts[1],  -- 4
-            awful.layout.layouts[6],  -- 5
+            awful.layout.layouts[6],  -- 4
+            awful.layout.layouts[1],  -- 5
             awful.layout.layouts[1],  -- 6
             awful.layout.layouts[1],  -- 7
             awful.layout.layouts[1],  -- 8
@@ -536,10 +536,10 @@ awful.rules.rules = {
     { rule = { class = "URxvt", instance = "startup" }, properties = { tag = tags[1][1] } },
     { rule = { class = "URxvt" }, properties = { size_hints_honor = false } },
     { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
-    { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][5] } },
-    { rule = { class = "Subl3"}, properties = { tag = tags[1][4] } },
+    { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][4] } },
+    { rule = { class = "Subl3"}, properties = { tag = tags[1][5] } },
     { rule = { class = "google-chrome-unstable"}, properties = { tag = tags[1][2] } },
-    { rule = { class = "Chromium"}, properties = { tag = tags[1][2] } },
+    { rule = { class = "chromium"}, properties = { tag = tags[1][3] } },
     { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
     --{ rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
     { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
@@ -651,6 +651,6 @@ run_once("unclutter", "--timeout 1")
 -- {{{ start a few programs
 function start_ping()
     run_once("google-chrome-unstable", nil, "/opt/google/chrome-unstable/chrome.*")
-    run_once("firefox")
+    run_once("chromium", nil, "/usr/lib/chromium/chromium")
     run_once("intellij-idea-ultimate-edition", nil, "/bin/sh /usr/share/intellij-idea-ultimate-edition/bin/idea.sh")
 end
