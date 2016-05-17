@@ -138,6 +138,25 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- {{{ Wibox
 markup      = lain.util.markup
 
+-- Keyboard map indicator and changer
+kbdcfg = {}
+kbdcfg.cmd = "setxkbmap"
+kbdcfg.layout = { { "fr", "" , "azerty" }, { "fr", "bepo" , "bépo" } } 
+kbdcfg.current = 1  -- fr is our default layout
+kbdcfg.widget = wibox.widget.textbox()
+kbdcfg.widget:set_text(" " .. kbdcfg.layout[kbdcfg.current][3] .. " ")
+kbdcfg.switch = function ()
+  kbdcfg.current = kbdcfg.current % #(kbdcfg.layout) + 1
+  local t = kbdcfg.layout[kbdcfg.current]
+  kbdcfg.widget:set_text(" " .. t[3] .. " ")
+  os.execute( kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] )
+end
+
+ -- Mouse bindings
+kbdcfg.widget:buttons(
+ awful.util.table.join(awful.button({ }, 1, function () kbdcfg.switch() end))
+)
+
 -- Textclock
 clockicon = wibox.widget.imagebox(beautiful.widget_clock)
 mytextclock = awful.widget.textclock(markup("#7788af", "%a %d %b ") .. markup("#de5e1e", " %H:%M"))
@@ -316,6 +335,7 @@ for s = 1, screen.count() do
     right_layout:add(tempwidget)
     right_layout:add(baticon)
     right_layout:add(batwidget)
+    right_layout:add(kbdcfg.widget)
     right_layout:add(clockicon)
     right_layout:add(mytextclock)
     right_layout:add(spacer)
