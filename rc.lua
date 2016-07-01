@@ -412,13 +412,13 @@ globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end),
+    --awful.key({ modkey }, "x",
+    --          function ()
+    --              awful.prompt.run({ prompt = "Run Lua code: " },
+    --              mypromptbox[mouse.screen].widget,
+    --              awful.util.eval, nil,
+    --              awful.util.getdir("cache") .. "/history_eval")
+    --          end),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end),
 
@@ -451,7 +451,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end),
     
     --thunar
-    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("thunar") end),
+    awful.key({ modkey }, "à", function () awful.util.spawn_with_shell("thunar") end),
     awful.key({}, "XF86Explorer", function () awful.util.spawn_with_shell("thunar") end),
 
     -- Dropdown terminal
@@ -466,7 +466,7 @@ globalkeys = awful.util.table.join(
 
 clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
+    awful.key({ modkey, "Shift"   }, "x",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
