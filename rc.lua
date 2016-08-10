@@ -451,7 +451,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "a", function () awful.menu.clients({theme = { width = 400 }}) end),
     
     --thunar
-    awful.key({ modkey }, "à", function () awful.util.spawn_with_shell("thunar") end),
+    awful.key({ modkey }, "#52", function () awful.util.spawn_with_shell("thunar") end),
     awful.key({}, "XF86Explorer", function () awful.util.spawn_with_shell("thunar") end),
 
     -- Dropdown terminal
@@ -549,20 +549,16 @@ awful.rules.rules = {
                      raise = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
-    { rule = { class = "MPlayer" }, properties = { floating = true } },
     { rule = { class = "pinentry" }, properties = { floating = true } },
     { rule = { class = "gimp" }, properties = { floating = true } },
     { rule = { class = "Thunar" }, properties = { floating = true } },
     { rule = { class = "URxvt", instance = "startup" }, properties = { tag = tags[1][1] } },
     { rule = { class = "URxvt" }, properties = { size_hints_honor = false } },
-    { rule = { class = "Pidgin"}, properties = { tag = tags[1][9] } },
     { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][4] } },
     { rule = { class = "Subl3"}, properties = { tag = tags[1][5] } },
-    { rule = { class = "google-chrome-unstable"}, properties = { tag = tags[1][2] } },
+    { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
     { rule = { class = "chromium"}, properties = { tag = tags[1][3] } },
     { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
-    --{ rule = { class = "Talend Studio"}, properties = { tag = tags[1][5] } },
-    { rule = { class = "DBeaver"}, properties = { tag = tags[1][6] } },
     { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
     { rule = { class = "Clementine"}, properties = { tag = tags[1][9] } },
 }
