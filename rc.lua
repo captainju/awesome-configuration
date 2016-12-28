@@ -45,7 +45,7 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/multicolor/theme.lu
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
-editor = os.getenv("EDITOR") or "vim"
+editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
 lockscreen_cmd = "sxlock"
 
@@ -57,7 +57,7 @@ lockscreen_cmd = "sxlock"
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
-awful.layout.layouts = {
+local layouts = {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
@@ -97,15 +97,15 @@ tags = {
            '9',
            },
  layout = {
-            awful.layout.layouts[6],   -- 1
-            awful.layout.layouts[1],   -- 2
-            awful.layout.layouts[1],   -- 3
-            awful.layout.layouts[6],  -- 4
-            awful.layout.layouts[1],  -- 5
-            awful.layout.layouts[1],  -- 6
-            awful.layout.layouts[1],  -- 7
-            awful.layout.layouts[1],  -- 8
-            awful.layout.layouts[1],  -- 9
+            layouts[6],   -- 1
+            layouts[1],   -- 2
+            layouts[1],   -- 3
+            layouts[6],  -- 4
+            layouts[1],  -- 5
+            layouts[1],  -- 6
+            layouts[1],  -- 7
+            layouts[1],  -- 8
+            layouts[1],  -- 9
           }
        }
 for s = 1, screen.count() do
@@ -404,8 +404,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1)      end),
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1) end),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1) end),
+    awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
@@ -427,7 +427,7 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86Sleep", function () awful.util.spawn(lockscreen_cmd) end),
 
     --lock inputs
-    awful.key({}, "#78", function () awful.util.spawn("xtrlock") end),
+    --awful.key({}, "#78", function () awful.util.spawn(lockscreen_cmd) end),
 
     --sound
     -- 121 122 123 mute down up
@@ -444,6 +444,9 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -time 1 -steps 1 -dec 10") end),
     awful.key({}, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -time 1 -steps 1 -inc 10") end),
 
+    --autodisplay
+    awful.key({}, "XF86WakeUp", function () awful.util.spawn("/home/jblondeau/dev/auto_display.sh") end),
+    
     --screen capture
     awful.key({}, "Print", function () awful.util.spawn_with_shell("screengrab") end),
 
@@ -458,10 +461,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "z", function () drop(terminal) end),
 
     -- Start a few progs
-    awful.key({ modkey }, "s", function () start_ping() end),
-
-    --auto display screen
-    awful.key({ modkey }, "#74", function () awful.util.spawn_with_shell("/home/jblondeau/dev/auto_display.sh") end)
+    awful.key({ modkey }, "s", function () start_ping() end)
 )
 
 clientkeys = awful.util.table.join(
@@ -556,11 +556,11 @@ awful.rules.rules = {
     { rule = { class = "URxvt" }, properties = { size_hints_honor = false } },
     { rule = { class = "jetbrains-idea"}, properties = { tag = tags[1][4] } },
     { rule = { class = "Subl3"}, properties = { tag = tags[1][5] } },
-    { rule = { class = "Google-chrome-unstable"}, properties = { tag = tags[1][2] } },
-    { rule = { class = "chromium"}, properties = { tag = tags[1][3] } },
-    { rule = { class = "Firefox"}, properties = { tag = tags[1][3] } },
+    { rule = { class = "Google-chrome-beta"}, properties = { tag = tags[1][2] } },
+    { rule = { class = "Chromium"}, properties = { tag = tags[1][3] } },
     { rule = { class = "Spotify"}, properties = { tag = tags[1][9] } },
     { rule = { class = "Clementine"}, properties = { tag = tags[1][9] } },
+    { rule = { class = "Slack"}, properties = { tag = tags[1][9] } },
 }
 -- }}}
 
@@ -652,9 +652,9 @@ function run_once(prg,arg_string,pname,screen)
     end
 
     if not arg_string then
-        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "'; or " .. prg .. "",screen)
+        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "' || (" .. prg .. ")",screen)
     else
-        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. " ".. arg_string .."'; or " .. prg .. " " .. arg_string .. "",screen)
+        return awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. " ".. arg_string .."' || (" .. prg .. " " .. arg_string .. ")",screen)
     end
 end
 
@@ -662,11 +662,13 @@ end
 run_once(terminal, "-name startup")
 run_once("redshift")
 run_once("nm-applet")
-run_once("unclutter", "--timeout 1")
+run_once("unclutter", "-idle 1")
+run_once("thunar", "--daemon")
+run_once("slack")
 
 -- {{{ start a few programs
 function start_ping()
-    run_once("google-chrome-unstable", nil, "/opt/google/chrome-unstable/chrome.*")
+    run_once("google-chrome-beta", nil, "/opt/google/chrome-beta/chrome.*")
     run_once("chromium", nil, "/usr/lib/chromium/chromium")
     run_once("intellij-idea-ultimate-edition", nil, "/bin/sh /usr/share/intellij-idea-ultimate-edition/bin/idea.sh")
 end
