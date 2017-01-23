@@ -29,8 +29,7 @@ local function worker(args)
 
     function update()
         local f = io.open(tempfile)
-        if f ~= nil
-        then
+        if f then
             coretemp_now = tonumber(f:read("*all")) / 1000
             f:close()
         else
@@ -42,6 +41,7 @@ local function worker(args)
     end
 
     newtimer("coretemp", timeout, update)
+
     return temp.widget
 end
 

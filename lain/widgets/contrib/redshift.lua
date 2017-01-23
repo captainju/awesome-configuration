@@ -8,7 +8,6 @@
 
 local awful        = require("awful")
 local os           = os
-local spawn        = awful.util.spawn_with_shell
 
 local setmetatable = setmetatable
 
@@ -16,20 +15,19 @@ local setmetatable = setmetatable
 -- lain.widgets.contrib.redshift
 local redshift = {}
 
-local attached = false             -- true if attached to a widget
-local active = false               -- true if redshift is active
-local running = false              -- true if redshift was initialized
-local update_fnct = function() end -- Function that is run each time redshift is toggled. See redshift:attach().
-
+local attached    = false           -- true if attached to a widget
+local active      = false           -- true if redshift is active
+local running     = false           -- true if redshift was initialized
+local update_fnct = function() end  -- Function that is run each time redshift is toggled. See redshift:attach().
 
 local function init()
     -- As there is no way to determine if redshift was previously
     -- toggled off (i.e Awesome on-the-fly restart), kill redshift to make sure
     os.execute("pkill redshift")
     -- Remove existing color adjustment
-    spawn("redshift -x")
+    awful.spawn.with_shell("redshift -x")
     -- (Re)start redshift
-    spawn("redshift")
+    awful.spawn.with_shell("redshift")
     running = true
     active = true
 end

@@ -8,7 +8,6 @@
 
 local newtimer     = require("lain.helpers").newtimer
 local read_pipe    = require("lain.helpers").read_pipe
-
 local wibox        = require("wibox")
 
 local setmetatable = setmetatable
@@ -27,8 +26,11 @@ local function worker(args)
 
     function base.update()
         output = read_pipe(cmd)
-        widget = base.widget
-        settings()
+        if output ~= base.prev then
+            widget = base.widget
+            settings()
+            base.prev = output
+        end
     end
 
     newtimer(cmd, timeout, base.update)

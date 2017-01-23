@@ -12,8 +12,7 @@ local wibox        = require("wibox")
 
 local setmetatable = setmetatable
 
--- Basic template for custom widgets
--- Asynchronous version
+-- Basic template for custom widgets (asynchronous version)
 -- lain.widgets.abase
 
 local function worker(args)
@@ -28,8 +27,11 @@ local function worker(args)
     function abase.update()
         async.request(cmd, function(f)
             output = f
-            widget = abase.widget
-            settings()
+            if output ~= abase.prev then
+                widget = abase.widget
+                settings()
+                abase.prev = output
+            end
         end)
     end
 
