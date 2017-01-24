@@ -124,25 +124,6 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- {{{ Wibar
 local markup = lain.util.markup
 
--- Keyboard map indicator and changer
-kbdcfg = {}
-kbdcfg.cmd = "setxkbmap"
-kbdcfg.layout = { { "fr", "oss" , "azerty" }, { "fr", "bepo" , "bépo" } } 
-kbdcfg.current = 1  -- default layout
-kbdcfg.widget = wibox.widget.textbox()
-kbdcfg.widget:set_text(" " .. kbdcfg.layout[kbdcfg.current][3] .. " ")
-kbdcfg.switch = function ()
-  kbdcfg.current = kbdcfg.current % #(kbdcfg.layout) + 1
-  local t = kbdcfg.layout[kbdcfg.current]
-  kbdcfg.widget:set_text(" " .. t[3] .. " ")
-  os.execute( kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] )
-end
-
--- Mouse bindings
-kbdcfg.widget:buttons(
- awful.util.table.join(awful.button({ }, 1, function () kbdcfg.switch() end))
-)
-
 -- Textclock
 os.setlocale(os.getenv("LANG")) -- to localize the clock
 local clockicon = wibox.widget.imagebox(beautiful.widget_clock)
@@ -318,7 +299,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
+            mykeyboardlayout, --localectl --no-convert set-x11-keymap fr,fr pc105 bepo,azerty grp:shifts_toggle,grp_led:scroll
             netdownicon,
             netdowninfo,
             netupicon,
@@ -333,7 +314,6 @@ awful.screen.connect_for_each_screen(function(s)
             tempwidget,
             baticon,
             batwidget,
-            kbdcfg.widget,
             clockicon,
             mytextclock,
             spacer,
@@ -740,11 +720,11 @@ run_once(terminal, "-name startup")
 run_once("redshift")
 run_once("nm-applet")
 run_once("thunar", "--daemon")
-run_once("slack")
 
 -- {{{ start a few programs
 function start_ping()
     run_once("google-chrome-beta", nil, "/opt/google/chrome-beta/chrome.*")
     run_once("chromium", nil, "/usr/lib/chromium/chromium")
     run_once("intellij-idea-ultimate-edition", nil, "/bin/sh /usr/share/intellij-idea-ultimate-edition/bin/idea.sh")
+    run_once("slack")
 end
