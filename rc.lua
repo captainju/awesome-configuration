@@ -77,7 +77,7 @@ awful.layout.layouts = {
 layouts = awful.layout.layouts
 tags = {
   names  = { 1, 2, 3, 4, 5, 6, 7, 8, 9},
-  layout = { layouts[2], layouts[1], layouts[1], layouts[2], layouts[1],
+  layout = { layouts[2], layouts[1], layouts[1], layouts[1], layouts[1],
              layouts[1], layouts[1], layouts[1], layouts[1], layouts[1]
 }}
 -- }}}
@@ -618,13 +618,13 @@ awful.rules.rules = {
                             "Thunar", }}, properties = { floating = true }},
     { rule = { class = "URxvt", instance = "startup" }, properties = { screen = 1, tag = "1" } },
     { rule = { class = "URxvt" }, properties = { size_hints_honor = false } },
-    { rule = { class = "jetbrains-idea"}, properties = { screen = 1, tag = "4" } },
+    { rule = { class = "jetbrains-idea"}, properties = { screen = 2, tag = "4" } },
     { rule = { class = "Subl3"}, properties = { screen = 1, tag = "5" } },
     { rule = { class = "Google-chrome-beta"}, properties = { screen = 1, tag = "2" } },
     { rule = { class = "Chromium"}, properties = { screen = 1, tag = "3" } },
     { rule = { class = "Spotify"}, properties = { screen = 1, tag = "9" } },
     { rule = { class = "Clementine"}, properties = { screen = 1, tag = "9" } },
-    { rule = { class = "Slack"}, properties = { screen = 1, tag = "9" } },
+    { rule = { class = "Slack"}, properties = { screen = 1, tag = "5" } },
 }
 -- }}}
 
